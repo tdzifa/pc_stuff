@@ -1,0 +1,74 @@
+import java.io.*;
+public class BinarySearch{
+
+	public static void main(String[] args) throws Exception{
+			
+		boolean keepGuessing = true;
+		int [] array = 	generateField(10);
+
+		for(int i = 0; i < array.length; i++){
+			System.out.print(" "+array[i]);
+		}	
+		System.out.println();
+		
+		while(keepGuessing){
+			int value = askForInt("Which value are you looking for..");
+
+			int position = binarySearch(value, array);
+						
+			if(position == -1){
+				System.out.println("It is not contained in the array.");
+			} else {
+				System.out.println("The value is on position "+(position+1)+ " (index "+(position)+" )");
+			}
+			if (askForInt("Wanna quit? Enter -1.. ") == -1){
+				keepGuessing=false;
+			}			
+		}
+	}
+
+	public static int binarySearch(int value, int[] array){
+		int foundIndex = -1;
+		
+		int start = 0;
+		int (end=array.length-1);
+		int mid;
+		while (start!=end)
+		{
+			mid=(start+end)/2;
+			if (value==array[mid])
+			{
+				foundIndex=mid;
+				break;
+			}
+			else if (value>array[mid])
+				start=mid+1;
+			else
+				end=mid-1;
+		}
+		return foundIndex;
+	}
+
+	public static int[] generateField(int number) {
+		int[] field = new int[number];
+
+		//first entry 
+		field[0] = (int)(Math.random()*20)-10;
+
+		//following entries are based on previous ones
+		for(int i=1; i<number; i++){
+			field[i] = field[i-1] + ((int)(Math.random()*10));
+		}
+		
+		return field;
+	}
+
+	static int askForInt(String message) throws IOException{
+		System.out.println();
+		System.out.print(message);
+
+		BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+		
+		return Integer.parseInt(input.readLine());
+	}
+}
